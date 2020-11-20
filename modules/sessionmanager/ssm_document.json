@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "1.0",
+  "description": "Document to hold regional settings for session manager",
+  "sessionType": "Standard_Stream",
+  "inputs": {
+    "s3BucketName": "${aws_s3_bucket.operation.id}",
+    "cloudWatchLogGroupName": "${aws_cloudwatch_log_group.operation.name}"
+  }
+}

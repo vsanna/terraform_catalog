@@ -4,13 +4,13 @@ provider "aws" {
 
 # 1. create VPC
 module "vpc" {
-  source = "../../network/vpc"
+  source = "..\/..\/modules\/network/vpc"
   name = "basic"
 }
 
 # 2. create internet gateway
 module "ig" {
-  source = "../../network/internetgateway"
+  source = "..\/..\/modules\/network/internetgateway"
   vpc = {
     id = module.vpc.vpc_id
     name = module.vpc.vpc_name
@@ -19,7 +19,7 @@ module "ig" {
 
 # 3. create one pair of pub/priv subnets
 module "create_and_connet_pub_priv_subnets0" {
-  source = "../../network/combine__create_and_connect_private_public_subnets"
+  source = "..\/..\/modules\/network/combine__create_and_connect_private_public_subnets"
   vpc = {
     id = module.vpc.vpc_id
     name = module.vpc.vpc_name
@@ -35,7 +35,7 @@ module "create_and_connet_pub_priv_subnets0" {
 
 # 3-2. create one more pair
 module "create_and_connet_pub_priv_subnets1" {
-  source = "../../network/combine__create_and_connect_private_public_subnets"
+  source = "..\/..\/modules\/network/combine__create_and_connect_private_public_subnets"
   vpc = {
     id = module.vpc.vpc_id
     name = module.vpc.vpc_name
@@ -54,7 +54,7 @@ module "create_and_connet_pub_priv_subnets1" {
 * Bootup Instances
 **********************************/
 module "bastion" {
-  source = "../../ec2module/bastion_server"
+  source = "..\/..\/ec2/bastion_server"
   name = "bastion"
   instance_type = "t3.micro"
   vpc_id = module.vpc.vpc_id
@@ -62,7 +62,7 @@ module "bastion" {
 }
 
 module "nginx" {
-  source = "../../ec2module/web_server"
+  source = "..\/..\/ec2/web_server"
   name = "nginx"
   instance_type = "t3.micro"
   vpc_id = module.vpc.vpc_id
@@ -72,7 +72,7 @@ module "nginx" {
 
 # TODO: move these part into web_server module
 module "eip_for_nginx" {
-  source = "../../network/elasticip"
+  source = "..\/..\/modules\/network/elasticip"
   name = "eip_for_nginx"
 }
 
@@ -82,7 +82,7 @@ resource "aws_eip_association" "eip_for_nginx" {
 }
 
 module "private_machine" {
-  source = "../../ec2module/web_server"
+  source = "..\/..\/ec2/web_server"
   name = "private_machine"
   instance_type = "t3.micro"
   vpc_id = module.vpc.vpc_id
